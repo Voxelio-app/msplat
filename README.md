@@ -1,5 +1,11 @@
 # msplat
 
+> [!NOTE]
+> This Voxelio fork adds a source-only Swift Package for iOS 18+. The C++,
+> Objective-C++, Swift, and Metal sources are compiled by Xcode; no prebuilt
+> XCFramework, static archive, or metallib is downloaded. See
+> [VOXELIO_CHANGES.md](VOXELIO_CHANGES.md) for the exact delta from upstream.
+
 A 3D Gaussian Splatting training engine for Apple Silicon, built entirely on Metal. No external dependencies beyond system frameworks.
 
 The entire training pipeline: projection, sorting, rasterization, SSIM loss, backward pass, Adam optimizer, and densification runs as fused Metal compute shaders.
@@ -61,6 +67,23 @@ Backward:
 
 ## Installation & Usage
 
+### iOS — source-only Swift Package
+
+Add this fork to an Xcode project, or declare it in `Package.swift`:
+
+```swift
+dependencies: [
+    .package(
+        url: "https://github.com/Voxelio-app/msplat.git",
+        branch: "main"
+    )
+]
+```
+
+The root package supports iOS 18 and exposes the `Msplat` library. Xcode builds
+the native core and Metal shader directly from the checked-in sources under
+`Sources/`.
+
 ### Python
 
 ```bash
@@ -98,7 +121,7 @@ pip install msplat[cli]
 msplat-train path/to/dataset -n 7000 --eval
 ```
 
-### Swift
+### Swift — upstream macOS XCFramework workflow
 
 Requires Xcode and CMake (`brew install cmake`).
 
